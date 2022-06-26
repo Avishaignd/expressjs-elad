@@ -1,16 +1,23 @@
 const express = require('express')
 const router = express.Router()
-const data = require('../mock-data.json')
-const { addNewUser } = require('../controls/userCtrl.js')
+const { addNewUser, getAllUsers, updateUser } = require('../controls/userCtrl.js')
 const multer = require('multer')
-const upload = multer({ dest: 'uploads/' })
 
-
-router.get('/', (req, res) => {
-    res.send(data)
+const storage = multer.diskStorage({
+    destination: function(req, file, cb) {
+      cb(null, './uploads')
+    },
+    filename: function(req, file, cb) {
+      cb(null, file.originalname)
+    }
 })
 
-router.post('/AddUser', upload.none(), addNewUser)
+const upload = multer({ storage })
 
+router.get('/', getAllUsers)
+
+router.post('/AddUser', upload.single('photo'), addNewUser)
+
+router.put('/:id', updateUser)
 
 module.exports = router
