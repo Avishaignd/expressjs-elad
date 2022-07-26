@@ -10,6 +10,11 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
+    age: {
+        type: Number,
+        required: true,
+        min: [10, "must be at least 10 years old"]
+    },
     email: {
         type: String,
         required: true
@@ -20,7 +25,12 @@ const userSchema = new Schema({
     },
     photo: {
         type: String,
-        requiered: false
+        required: false
+    },
+    friends: {
+        type: [mongoose.SchemaTypes.ObjectId],
+        ref: "User",
+        required: false
     }
 })
 
